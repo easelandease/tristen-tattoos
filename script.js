@@ -110,7 +110,7 @@ function renderGallery() {
   gallery.innerHTML = '';
 
   const filtered = portfolioPhotos.filter(
-    photo => currentFilter === 'all' || photo.category === currentFilter
+    photo => photo.src && (currentFilter === 'all' || photo.category === currentFilter)
   );
   const toShow = filtered.slice(0, portfolioVisible);
 
@@ -119,19 +119,11 @@ function renderGallery() {
     item.className = 'gallery-item';
     item.dataset.category = photo.category;
 
-    if (photo.src) {
-      item.innerHTML = `
-        <img src="${photo.src}" alt="${photo.alt}" loading="lazy">
-        <div class="gallery-overlay"><span>${photo.category}</span></div>
-      `;
-      item.addEventListener('click', () => openLightbox(photo.src, photo.alt));
-    } else {
-      item.classList.add('no-img');
-      item.innerHTML = `
-        <div class="ph-icon">✦</div>
-        <div class="ph-label">${photo.category}</div>
-      `;
-    }
+    item.innerHTML = `
+      <img src="${photo.src}" alt="${photo.alt}" loading="lazy">
+      <div class="gallery-overlay"><span>${photo.category}</span></div>
+    `;
+    item.addEventListener('click', () => openLightbox(photo.src, photo.alt));
     gallery.appendChild(item);
   });
 
